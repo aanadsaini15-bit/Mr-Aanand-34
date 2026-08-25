@@ -1,0 +1,176 @@
+package com.example.proposalapp
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContent {
+            ProposalApp()
+        }
+    }
+}
+
+@Composable
+fun ProposalApp() {
+
+    var accepted by remember { mutableStateOf(false) }
+
+    val background = Brush.verticalGradient(
+        listOf(
+            Color(0xFFFFE4EC),
+            Color(0xFFFFF5F8),
+            Color(0xFFFFD6E2)
+        )
+    )
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(background)
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(30.dp),
+            elevation = CardDefaults.cardElevation(10.dp)
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(28.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Text(
+                    text = "💖",
+                    fontSize = 55.sp
+                )
+
+                Text(
+                    text = "A Special Question",
+                    fontSize = 27.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFFD81B60)
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Photo placeholder
+                Box(
+                    modifier = Modifier
+                        .size(190.dp)
+                        .background(
+                            Color(0xFFFFD1DF),
+                            RoundedCornerShape(25.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "📸\nYOUR PHOTO",
+                        textAlign = TextAlign.Center,
+                        fontSize = 20.sp
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(25.dp))
+
+                if (!accepted) {
+
+                    Text(
+                        text = "Will You Be Mine? ❤️",
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(25.dp))
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(15.dp)
+                    ) {
+
+                        Button(
+                            onClick = {
+                                accepted = true
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFFE91E63)
+                            ),
+                            shape = RoundedCornerShape(50.dp)
+                        ) {
+                            Text(
+                                text = "YES ❤️",
+                                fontSize = 18.sp
+                            )
+                        }
+
+                        OutlinedButton(
+                            onClick = { },
+                            shape = RoundedCornerShape(50.dp)
+                        ) {
+                            Text(
+                                text = "NO 😅",
+                                fontSize = 18.sp
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(25.dp))
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(25.dp)
+                    ) {
+                        Text("🎵 Music", fontSize = 16.sp)
+                        Text("✨ Effects", fontSize = 16.sp)
+                    }
+
+                } else {
+
+                    Text(
+                        text = "YAY! ❤️",
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFE91E63)
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Text(
+                        text = "You Said YES! 🎉💖",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Spacer(modifier = Modifier.height(15.dp))
+
+                    Text(
+                        text = "Our beautiful story starts here. 💕",
+                        fontSize = 17.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
+}
