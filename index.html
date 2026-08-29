@@ -1,176 +1,539 @@
-package com.example.proposalapp
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FaceConnect</title>
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#000;
+ color:#fff;
+ font-family:Arial,sans-serif
+}
+.app{
+ max-width:480px;
+ min-height:100vh;
+ margin:auto;
+ background:#050b18;
+ padding-bottom:90px
+}
+header{
+ height:70px;
+ padding:18px 20px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center
+}
+.logo{
+ font-size:24px;
+ font-weight:bold
+}
+.logo span{color:#4da3ff}
+header button{
+ background:none;
+ border:0;
+ color:white;
+ font-size:22px
+}
+main{padding:10px 20px}
+.card{
+ background:#0d1728;
+ border:1px solid #1c2a42;
+ border-radius:20px;
+ padding:20px;
+ margin-bottom:20px
+}
+.card h2{margin-top:0}
+p{
+ color:#aab5c6;
+ line-height:1.5
+}
+.gradient{
+ width:100%;
+ border:0;
+ padding:15px;
+ border-radius:14px;
+ color:#fff;
+ font-weight:bold;
+ background:linear-gradient(90deg,#168cff,#7938ff);
+ cursor:pointer
+}
+h3{margin-top:25px}
+.grid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px
+}
+.action{
+ background:#0c1728;
+ border:1px solid #1c2a42;
+ border-radius:17px;
+ padding:25px 10px;
+ text-align:center;
+ color:white;
+ cursor:pointer
+}
+.action b{
+ display:block;
+ font-size:30px;
+ margin-bottom:10px
+}
+.strength{
+ display:flex;
+ justify-content:space-between
+}
+.progress{
+ height:8px;
+ background:#1b293b;
+ border-radius:10px;
+ margin-top:12px
+}
+.progress div{
+ width:85%;
+ height:100%;
+ background:#18d99b;
+ border-radius:10px
+}
+nav{
+ position:fixed;
+ bottom:0;
+ left:50%;
+ transform:translateX(-50%);
+ width:min(480px,100%);
+ height:75px;
+ background:#081321;
+ border-top:1px solid #1b2a42;
+ display:flex;
+ justify-content:space-around;
+ align-items:center;
+ z-index:99
+}
+nav button{
+ background:none;
+ border:0;
+ color:#8b98aa;
+ font-size:22px;
+ cursor:pointer
+}
+nav small{
+ display:block;
+ font-size:10px;
+ margin-top:4px
+}
+.scan{
+ width:58px;
+ height:58px;
+ border-radius:50%;
+ color:white!important;
+ background:linear-gradient(135deg,#168cff,#7938ff)!important
+}
+.circle{
+ width:250px;
+ height:250px;
+ border:5px solid #18d99b;
+ border-radius:50%;
+ margin:30px auto;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:90px;
+ background:#0a1928
+}
+.center{text-align:center}
+.avatar{
+ width:120px;
+ height:120px;
+ border-radius:50%;
+ margin:20px auto;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:#17263b;
+ font-size:60px;
+ border:3px solid #704cff
+}
+.qr{
+ width:220px;
+ height:220px;
+ background:
+ repeating-linear-gradient(
+  45deg,#000 0,#000 5px,#fff 5px,#fff 10px
+ );
+ border:12px solid white;
+ margin:25px auto;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ color:red;
+ font-weight:bold
+}
+.row{
+ background:#0c1728;
+ border:1px solid #1c2a42;
+ padding:16px;
+ border-radius:14px;
+ margin:10px 0;
+ display:flex;
+ justify-content:space-between;
+ align-items:center
+}
+.add{
+ width:auto;
+ padding:8px 15px
+}
+.back{
+ background:none;
+ border:0;
+ color:#aab5c6;
+ font-size:16px;
+ margin-bottom:15px
+}
+</style>
+</head>
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+<body>
 
-        setContent {
-            ProposalApp()
-        }
-    }
+<div class="app">
+
+<header>
+ <div class="logo">◉ Face<span>Connect</span></div>
+ <button>🔔</button>
+</header>
+
+<main id="content"></main>
+
+<nav>
+ <button onclick="home()">⌂<small>Home</small></button>
+ <button onclick="profile()">👤<small>Profile</small></button>
+ <button class="scan" onclick="scan()">⌾</button>
+ <button onclick="connect()">🔗<small>Connect</small></button>
+ <button onclick="settings()">⚙<small>Settings</small></button>
+</nav>
+
+</div>
+
+<script>
+
+const content=document.getElementById("content");
+
+function home(){
+
+content.innerHTML=`
+
+<div class="card">
+<h2>Verify Your Identity</h2>
+
+<p>
+Use consent-based face verification to securely
+access your own FaceConnect profile.
+</p>
+
+<button class="gradient" onclick="scan()">
+Scan My Face
+</button>
+</div>
+
+<h3>Quick Actions</h3>
+
+<div class="grid">
+
+<div class="action" onclick="profile()">
+<b>👤</b>
+My Profile
+</div>
+
+<div class="action" onclick="qr()">
+<b>▦</b>
+My QR Code
+</div>
+
+<div class="action" onclick="links()">
+<b>🔗</b>
+Add Links
+</div>
+
+<div class="action" onclick="connect()">
+<b>📷</b>
+Scan & Connect
+</div>
+
+</div>
+
+<h3>Profile Strength</h3>
+
+<div class="card">
+
+<div class="strength">
+<b>Strong</b>
+<span>85%</span>
+</div>
+
+<div class="progress">
+<div></div>
+</div>
+
+</div>
+
+`;
+
 }
 
-@Composable
-fun ProposalApp() {
 
-    var accepted by remember { mutableStateOf(false) }
+function scan(){
 
-    val background = Brush.verticalGradient(
-        listOf(
-            Color(0xFFFFE4EC),
-            Color(0xFFFFF5F8),
-            Color(0xFFFFD6E2)
-        )
-    )
+content.innerHTML=`
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(background)
-            .padding(24.dp),
-        contentAlignment = Alignment.Center
-    ) {
+<button class="back" onclick="home()">← Back</button>
 
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(30.dp),
-            elevation = CardDefaults.cardElevation(10.dp)
-        ) {
+<div class="card center">
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(28.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+<h2>Scan Your Face</h2>
 
-                Text(
-                    text = "💖",
-                    fontSize = 55.sp
-                )
+<p>
+Position your face inside the circle.
+</p>
 
-                Text(
-                    text = "A Special Question",
-                    fontSize = 27.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFFD81B60)
-                )
+<div class="circle">
+🙂
+</div>
 
-                Spacer(modifier = Modifier.height(20.dp))
+<label>
+<input type="checkbox" id="consent">
+I consent to verification of my own account.
+</label>
 
-                // Photo placeholder
-                Box(
-                    modifier = Modifier
-                        .size(190.dp)
-                        .background(
-                            Color(0xFFFFD1DF),
-                            RoundedCornerShape(25.dp)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "📸\nYOUR PHOTO",
-                        textAlign = TextAlign.Center,
-                        fontSize = 20.sp
-                    )
-                }
+<br><br>
 
-                Spacer(modifier = Modifier.height(25.dp))
+<button class="gradient" onclick="verify()">
+Start Verification
+</button>
 
-                if (!accepted) {
+</div>
 
-                    Text(
-                        text = "Will You Be Mine? ❤️",
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
+`;
 
-                    Spacer(modifier = Modifier.height(25.dp))
-
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(15.dp)
-                    ) {
-
-                        Button(
-                            onClick = {
-                                accepted = true
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFE91E63)
-                            ),
-                            shape = RoundedCornerShape(50.dp)
-                        ) {
-                            Text(
-                                text = "YES ❤️",
-                                fontSize = 18.sp
-                            )
-                        }
-
-                        OutlinedButton(
-                            onClick = { },
-                            shape = RoundedCornerShape(50.dp)
-                        ) {
-                            Text(
-                                text = "NO 😅",
-                                fontSize = 18.sp
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(25.dp))
-
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(25.dp)
-                    ) {
-                        Text("🎵 Music", fontSize = 16.sp)
-                        Text("✨ Effects", fontSize = 16.sp)
-                    }
-
-                } else {
-
-                    Text(
-                        text = "YAY! ❤️",
-                        fontSize = 36.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE91E63)
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        text = "You Said YES! 🎉💖",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-
-                    Spacer(modifier = Modifier.height(15.dp))
-
-                    Text(
-                        text = "Our beautiful story starts here. 💕",
-                        fontSize = 17.sp,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-        }
-    }
 }
+
+
+function verify(){
+
+let consent=document.getElementById("consent");
+
+if(!consent.checked){
+
+alert("Please give consent first.");
+
+return;
+}
+
+alert(
+"Demo verification started. Camera and secure verification backend can be connected later."
+);
+
+}
+
+
+function profile(){
+
+content.innerHTML=`
+
+<div class="card center">
+
+<h2>My Profile</h2>
+
+<div class="avatar">
+👤
+</div>
+
+<h2>Your Name</h2>
+
+<p>@yourusername</p>
+
+<p>
+Digital Creator | Tech Enthusiast
+</p>
+
+<button class="gradient">
+Edit Profile
+</button>
+
+</div>
+
+`;
+
+}
+
+
+function qr(){
+
+content.innerHTML=`
+
+<div class="card center">
+
+<h2>My QR Code</h2>
+
+<p>
+Scan to view my FaceConnect profile.
+</p>
+
+<div class="qr">
+QR
+</div>
+
+<h3>@yourusername</h3>
+
+<button class="gradient">
+Share Profile
+</button>
+
+</div>
+
+`;
+
+}
+
+
+function links(){
+
+content.innerHTML=`
+
+<h2>Add Social Links</h2>
+
+<p>
+Add only profiles that you own and want to share.
+</p>
+
+<div class="row">
+<span>📷 Instagram</span>
+<button class="gradient add">Add</button>
+</div>
+
+<div class="row">
+<span>🔵 Facebook</span>
+<button class="gradient add">Add</button>
+</div>
+
+<div class="row">
+<span>✈️ Telegram</span>
+<button class="gradient add">Add</button>
+</div>
+
+<div class="row">
+<span>▶️ YouTube</span>
+<button class="gradient add">Add</button>
+</div>
+
+<div class="row">
+<span>🌐 Website</span>
+<button class="gradient add">Add</button>
+</div>
+
+`;
+
+}
+
+
+function connect(){
+
+content.innerHTML=`
+
+<div class="card center">
+
+<h2>Scan & Connect</h2>
+
+<p>
+Scan another FaceConnect user's QR code.
+</p>
+
+<div style="font-size:120px;margin:30px">
+▦
+</div>
+
+<button class="gradient" onclick="openCamera()">
+Open Camera
+</button>
+
+</div>
+
+<div class="card">
+
+<p>
+Only voluntarily shared FaceConnect profile
+information is displayed.
+</p>
+
+</div>
+
+`;
+
+}
+
+
+function openCamera(){
+
+alert(
+"Camera feature is ready for integration. Browser camera permission and QR scanning can be added next."
+);
+
+}
+
+
+function settings(){
+
+content.innerHTML=`
+
+<h2>Settings & Privacy</h2>
+
+<div class="row">
+<span>👤 Edit Profile</span>
+<span>›</span>
+</div>
+
+<div class="row">
+<span>🔒 Account Privacy</span>
+<span>›</span>
+</div>
+
+<div class="row">
+<span>🙂 Manage Face Data</span>
+<span>›</span>
+</div>
+
+<div class="row">
+<span>🗑️ Delete Face Data</span>
+<span>›</span>
+</div>
+
+<div class="row">
+<span>🔔 Notifications</span>
+<span>›</span>
+</div>
+
+<div class="row">
+<span>❓ Help & Support</span>
+<span>›</span>
+</div>
+
+<div class="card">
+
+<p>
+FaceConnect does not identify unknown people
+or search social-media accounts from a face.
+</p>
+
+</div>
+
+`;
+
+}
+
+
+home();
+
+</script>
+
+</body>
+</html>
